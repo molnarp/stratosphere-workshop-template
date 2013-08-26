@@ -23,14 +23,14 @@ public class Grid {
 	 */
 	public Grid(double cellWidth) {
 		double x = -180;
-		double y = -90;
 		while(x < 180) {
+			double y = -90;
 			while(y < 90) {
 				String id = x + ":" + y;
 				envelopes.add(new IdEnvelope(x, x + cellWidth, y, y + cellWidth, id));
-				x += cellWidth;
 				y += cellWidth;
 			}
+			x += cellWidth;
 		}
 	}
 
