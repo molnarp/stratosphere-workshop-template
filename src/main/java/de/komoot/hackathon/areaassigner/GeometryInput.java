@@ -18,24 +18,23 @@ package de.komoot.hackathon.areaassigner;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Point;
 
+import de.komoot.hackathon.areaassigner.model.PactGeometry;
 import de.komoot.hackathon.openstreetmap.GeometryModule;
 import de.komoot.hackathon.openstreetmap.JsonGeometryEntity;
 import eu.stratosphere.pact.common.stubs.Collector;
 import eu.stratosphere.pact.common.stubs.MapStub;
 import eu.stratosphere.pact.common.type.PactRecord;
-import eu.stratosphere.pact.common.type.base.PactInteger;
 import eu.stratosphere.pact.common.type.base.PactString;
 
-public class NodeInput extends MapStub {
+public class GeometryInput extends MapStub {
 	// initialize reusable mutable objects
 	private final PactRecord outputRecord = new PactRecord();
 	private final PactString nodeId = new PactString();
 	private final PactGeometry geometry = new PactGeometry();
 	private final ObjectMapper mapper;
 	
-	public NodeInput() {
+	public GeometryInput() {
 		mapper = new ObjectMapper();
 		mapper.registerModule(new GeometryModule());
 		mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
@@ -53,10 +52,10 @@ public class NodeInput extends MapStub {
 			entry = mapper.readValue(line.getValue(), JsonGeometryEntity.class);
 			
 			nodeId.setValue(entry.getId());
-			point.setValue(entry.getGeometry());
+			geometry.setValue(entry.getGeometry());
 			
 			record.setField(0, nodeId);
-			record.setField(1, point);
+			record.setField(1, geometry);
 			
 			collector.collect(outputRecord);
 			
