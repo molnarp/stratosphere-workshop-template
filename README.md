@@ -11,7 +11,7 @@ run the word count example
 ## Second task ##
 
 We want to work with geographic data. Download http://download.geofabrik.de/europe/germany/bremen-latest.osm.pbf and run:
-`export MAVEN_OPTS="-Xmx512m"` 
+`export MAVEN_OPTS="-Xmx512m"` (you need to update your working copy, I fixed a bug at 10:30am)
 `mvn -U clean compile exec:java -Dexec.mainClass="de.komoot.hackathon.PfbToJsonRecordsExporter" -Dexec.args="/path/to/bremen-latest.osm.pbf /targetdir/"`
 
 
