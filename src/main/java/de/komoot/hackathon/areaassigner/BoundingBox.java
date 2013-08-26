@@ -8,8 +8,8 @@ import eu.stratosphere.pact.common.stubs.StubAnnotation.ConstantFields;
 import eu.stratosphere.pact.common.stubs.StubAnnotation.OutCardBounds;
 import eu.stratosphere.pact.common.type.PactRecord;
 
-@ConstantFields(fields = {0, 1})
-@OutCardBounds(lowerBound = 1, upperBound = 1)
+//@ConstantFields(fields = {0, 1})
+//@OutCardBounds(lowerBound = 1, upperBound = 1)
 public class BoundingBox extends MapStub {
 
   @Override

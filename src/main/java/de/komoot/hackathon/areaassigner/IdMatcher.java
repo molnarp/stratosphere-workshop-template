@@ -14,8 +14,8 @@ import eu.stratosphere.pact.common.type.base.PactString;
  * 
  * @author lukacsg
  */
-@ConstantFields(fields = {})
-@OutCardBounds(lowerBound = 0, upperBound = OutCardBounds.UNBOUNDED)
+//@ConstantFields(fields = {})
+//@OutCardBounds(lowerBound = 0, upperBound = OutCardBounds.UNBOUNDED)
 public class IdMatcher extends MatchStub {
     private final PactRecord outputRecord = new PactRecord();
     private Geometry point;
