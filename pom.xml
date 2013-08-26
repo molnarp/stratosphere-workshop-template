@@ -85,7 +85,7 @@
           <archive>
             <manifestEntries>
               <mode>development</mode>
-              <Pact-Assembler-Class>de.komoot.hackathon.PactAreaAssigner</Pact-Assembler-Class>
+              <Pact-Assembler-Class>de.komoot.hackathon.areaassigner.AreaAssignerMain</Pact-Assembler-Class>
             </manifestEntries>
           </archive>
         </configuration>

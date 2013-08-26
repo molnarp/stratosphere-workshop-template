@@ -43,7 +43,7 @@ import eu.stratosphere.pact.example.util.AsciiUtils;
  * 
  * @author Larysa, Moritz Kaufmann, Stephan Ewen
  */
-public class PactAreaAssigner implements PlanAssembler, PlanAssemblerDescription {
+public class AreaAssignerMain implements PlanAssembler, PlanAssemblerDescription {
 
 	/**
 	 * Converts a PactRecord containing one string in to multiple string/integer
