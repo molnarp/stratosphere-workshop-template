@@ -27,7 +27,7 @@ import eu.stratosphere.pact.common.stubs.MapStub;
 import eu.stratosphere.pact.common.type.PactRecord;
 import eu.stratosphere.pact.common.type.base.PactString;
 
-public class GeometryInput extends MapStub {
+public class GeometryInputMapper extends MapStub {
 	
 	// initialize reusable mutable objects
 	private final PactRecord outputRecord = new PactRecord();
@@ -35,7 +35,7 @@ public class GeometryInput extends MapStub {
 	private final PactGeometry geometry = new PactGeometry();
 	private final ObjectMapper mapper;
 	
-	public GeometryInput() {
+	public GeometryInputMapper() {
 		mapper = new ObjectMapper();
 		mapper.registerModule(new GeometryModule());
 		mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);

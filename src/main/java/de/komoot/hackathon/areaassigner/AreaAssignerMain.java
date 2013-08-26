@@ -46,7 +46,7 @@ public class AreaAssignerMain implements PlanAssembler, PlanAssemblerDescription
 
 		//  Node mappers
 
-		MapContract nodeInput = MapContract.builder(GeometryInput.class)
+		MapContract nodeInput = MapContract.builder(GeometryInputMapper.class)
 				.input(nodeSource).name("Reading node data").build();
 		MapContract nodeBBox = MapContract.builder(BoundingBox.class)
 				.input(nodeInput).name("Calculating Bounding Boxes").build();
@@ -55,7 +55,7 @@ public class AreaAssignerMain implements PlanAssembler, PlanAssemblerDescription
 
 		//  Area mappers
 
-		MapContract areaInput = MapContract.builder(GeometryInput.class)
+		MapContract areaInput = MapContract.builder(GeometryInputMapper.class)
 				.input(areaSource).name("Reading area data").build();
 		MapContract areaBBox = MapContract.builder(BoundingBox.class)
 				.input(areaInput).name("Calculating Bounding Boxes").build();
@@ -63,7 +63,7 @@ public class AreaAssignerMain implements PlanAssembler, PlanAssemblerDescription
 				.input(areaBBox).name("Assigning CellId").build();
 
 		// Id Matcher
-		MatchContract idMatcher = MatchContract.builder(IdMatcher.class, PactString.class, 0, 0)
+		MatchContract idMatcher = MatchContract.builder(CellIdMatcher.class, PactString.class, 0, 0)
 				.input1(nodeCellId).input2(areaCellId).name("Matching by Cell Ids").build();
 
 		// Reduce
