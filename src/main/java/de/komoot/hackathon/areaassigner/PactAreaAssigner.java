@@ -13,7 +13,7 @@
  *
  **********************************************************************************************************************/
 
-package de.komoot.hackathon;
+package de.komoot.hackathon.areaassigner;
 
 import java.util.Iterator;
 
