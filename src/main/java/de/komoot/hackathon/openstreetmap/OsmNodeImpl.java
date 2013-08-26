@@ -8,22 +8,20 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 import java.util.Map;
 
 /** @author jan */
-public class OsmNodeImpl implements OsmNode {
+public class OsmNodeImpl extends Coordinate implements OsmNode {
 
 	private final static GeometryFactory gf = new GeometryFactory(new PrecisionModel(), 4326);
 
 	private final long id;
 
-	private final Coordinate coordinate;
-
 	public OsmNodeImpl(long osmId, Coordinate coordinate) {
+		super(coordinate);
 		this.id = osmId;
-		this.coordinate = coordinate;
 	}
 
 	@Override
 	public Coordinate getCoordinate() {
-		return coordinate;
+		return this;
 	}
 
 	@Override
@@ -38,7 +36,7 @@ public class OsmNodeImpl implements OsmNode {
 
 	@Override
 	public Point getGeometry() {
-		return gf.createPoint(coordinate);
+		return gf.createPoint(this);
 	}
 
 	@Override
