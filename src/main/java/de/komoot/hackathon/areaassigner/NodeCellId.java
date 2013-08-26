@@ -44,8 +44,7 @@ public class NodeCellId extends MapStub {
 	@Override
 	public void map(PactRecord record, Collector<PactRecord> collector) {
 		PactInteger nodeId = record.getField(0, PactInteger.class);
-		PactGeometry pactEnvelope = record.getField(1, PactGeometry.class);
-		PactGeometry point = record.getField(2, PactGeometry.class);
+		PactGeometry point = record.getField(1, PactGeometry.class);
 
 		this.outputRecord.setField(1, nodeId);
 		this.outputRecord.setField(2, point);

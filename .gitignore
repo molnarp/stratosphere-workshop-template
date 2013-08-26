@@ -10,3 +10,5 @@
 /.settings
 /classpath.txt
 /out/
+
+*.iml
