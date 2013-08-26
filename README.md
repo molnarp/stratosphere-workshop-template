@@ -6,12 +6,14 @@ Install Java7 and maven3. You can use maven from the command line. Eclipse and I
 
 ## First task ##
 
-run the word count example
+you have to update the pom.xml to the latest version. then run `mvn package` to get a jar file
+
+check https://stratosphere.eu/wiki/doku.php/wiki:executepactprogram for details how to start it.
 
 ## Second task ##
 
 We want to work with geographic data. Download http://download.geofabrik.de/europe/germany/bremen-latest.osm.pbf and run:
-
+`export MAVEN_OPTS="-Xmx512m"` (you need to update your working copy, I fixed a bug at 10:30am)
 `mvn -U clean compile exec:java -Dexec.mainClass="de.komoot.hackathon.PfbToJsonRecordsExporter" -Dexec.args="/path/to/bremen-latest.osm.pbf /targetdir/"`
 
 
