@@ -12,7 +12,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 import com.vividsolutions.jts.io.WKBReader;
 
 import de.komoot.hackathon.areaassigner.CollectorHelper;
-import de.komoot.hackathon.areaassigner.GeometryInput;
+import de.komoot.hackathon.areaassigner.GeometryInputMapper;
 import de.komoot.hackathon.areaassigner.model.PactGeometry;
 import eu.stratosphere.pact.common.type.PactRecord;
 import eu.stratosphere.pact.common.type.base.PactString;
@@ -32,7 +32,7 @@ public class GeometyInputTest {
 		PactString line = new PactString("{\"id\":\"N125799\",\"geometry\":\"0020000001000010E6402192D810CDAD9E404A8997AEDDCE7D\",\"tags\":{}}");
 		input.addField(line);
 		
-		GeometryInput tested = new GeometryInput();
+		GeometryInputMapper tested = new GeometryInputMapper();
 		
 		try {
 			tested.map(input, collector);

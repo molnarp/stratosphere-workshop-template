@@ -21,6 +21,7 @@ import eu.stratosphere.pact.common.stubs.Collector;
 import eu.stratosphere.pact.common.stubs.MapStub;
 import eu.stratosphere.pact.common.type.PactRecord;
 import eu.stratosphere.pact.common.type.base.PactString;
+import java.util.Arrays;
 
 import java.util.List;
 
@@ -31,9 +32,11 @@ import java.util.List;
  */
 
 public class CellId extends MapStub {
+    
+        public static final int GRID_SIZE = 10;
 	private final PactRecord outputRecord = new PactRecord();
 	private final PactString cellId = new PactString();
-	private Grid grid = new Grid(1);
+	private Grid grid = new Grid(GRID_SIZE);
 
 	@Override
 	public void map(PactRecord record, Collector<PactRecord> collector) {

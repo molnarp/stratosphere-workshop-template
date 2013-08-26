@@ -46,7 +46,7 @@ public class CellIdTest {
 
 		PactRecord actual = collector.get(0);
 		PactString cellId = actual.getField(0, PactString.class);
-		assertEquals("9.0:46.0", cellId.getValue());
+		assertEquals("0.0:40.0", cellId.getValue());
 		assertEquals(nodeId.getValue(), actual.getField(1, PactString.class).getValue());
 		assertTrue(geometry.getGeometry().equalsExact(actual.getField(2, PactGeometry.class).getGeometry(), 0.1));
 	}

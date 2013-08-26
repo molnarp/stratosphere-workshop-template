@@ -25,10 +25,12 @@ public class NodeReducer extends ReduceStub{
         buffer = new StringBuffer();
         buffer.append(tmp.getField(1, PactString.class).getValue());
         buffer.append(",");
+        
         while (itrtr.hasNext()) {
             buffer.append(itrtr.next().getField(1, PactString.class).getValue());
             buffer.append(",");
         }
+        
         buffer.deleteCharAt(buffer.length()-1);
         outputRecord.setField(0, id);
         outputRecord.setField(1, new PactString(buffer.toString()));
