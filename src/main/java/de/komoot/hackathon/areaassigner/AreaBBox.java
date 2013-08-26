@@ -3,6 +3,8 @@ package de.komoot.hackathon.areaassigner;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
 
+import de.komoot.hackathon.areaassigner.model.PactGeometry;
+
 import eu.stratosphere.pact.common.stubs.Collector;
 import eu.stratosphere.pact.common.stubs.MapStub;
 import eu.stratosphere.pact.common.stubs.StubAnnotation.ConstantFields;
@@ -15,8 +17,8 @@ public class AreaBBox extends MapStub {
 
   @Override
   public void map(PactRecord areaRecord, Collector<PactRecord> out) throws Exception {
-    Geometry geometry = areaRecord.getField(1, Geometry.class);
-    areaRecord.addField(geometry.getEnvelopeInternal());
+    PactGeometry geometry = areaRecord.getField(1, PactGeometry.class);
+    areaRecord.addField(geometry.getGeometry().getEnvelopeInternal());
     out.collect(areaRecord);
   }
   
