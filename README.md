@@ -6,7 +6,9 @@ Install Java7 and maven3. You can use maven from the command line. Eclipse and I
 
 ## First task ##
 
-you have to update the pom.xml to the latest version. then run `mvn package` 
+you have to update the pom.xml to the latest version. then run `mvn package` to get a jar file
+
+check https://stratosphere.eu/wiki/doku.php/wiki:executepactprogram for details how to start it.
 
 ## Second task ##
 
