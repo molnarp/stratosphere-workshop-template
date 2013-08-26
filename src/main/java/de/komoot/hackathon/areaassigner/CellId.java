@@ -20,27 +20,30 @@ import de.komoot.hackathon.areaassigner.model.PactGeometry;
 import eu.stratosphere.pact.common.stubs.Collector;
 import eu.stratosphere.pact.common.stubs.MapStub;
 import eu.stratosphere.pact.common.type.PactRecord;
-import eu.stratosphere.pact.common.type.base.PactInteger;
 import eu.stratosphere.pact.common.type.base.PactString;
 
 import java.util.List;
 
-public class AreaCellId extends MapStub {
-	// initialize reusable mutable objects
+/**
+ * assigns a node to a cell id
+ *
+ * @author christoph
+ */
+
+public class CellId extends MapStub {
 	private final PactRecord outputRecord = new PactRecord();
 	private final PactString cellId = new PactString();
-	public Grid grid = new Grid(0.1);
+	private Grid grid = new Grid(1);
 
 	@Override
 	public void map(PactRecord record, Collector<PactRecord> collector) {
-		PactInteger areaId = record.getField(0, PactInteger.class);
-		PactGeometry geometry = record.getField(1, PactGeometry.class);
+		PactString itemId = record.getField(0, PactString.class);
+		PactGeometry point = record.getField(1, PactGeometry.class);
 
-		this.outputRecord.setField(1, areaId);
-		this.outputRecord.setField(2, geometry);
+		this.outputRecord.setField(1, itemId);
+		this.outputRecord.setField(2, point);
 
-		// tokenize the line
-		List<String> cellIds = grid.getIdsForGeometry(geometry.getGeometry());
+		List<String> cellIds = grid.getIdsForGeometry(point.getGeometry());
 		for(String cellId : cellIds) {
 			this.cellId.setValue(cellId);
 			this.outputRecord.setField(0, this.cellId);

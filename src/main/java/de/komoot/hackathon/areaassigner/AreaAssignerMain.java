@@ -21,7 +21,6 @@ import eu.stratosphere.pact.common.io.TextInputFormat;
 import eu.stratosphere.pact.common.plan.Plan;
 import eu.stratosphere.pact.common.plan.PlanAssembler;
 import eu.stratosphere.pact.common.plan.PlanAssemblerDescription;
-import eu.stratosphere.pact.common.type.base.PactInteger;
 import eu.stratosphere.pact.common.type.base.PactString;
 
 /**
@@ -51,22 +50,22 @@ public class AreaAssignerMain implements PlanAssembler, PlanAssemblerDescription
 				.input(nodeSource).name("Reading node data").build();
 		MapContract nodeBBox = MapContract.builder(BoundingBox.class)
 				.input(nodeInput).name("Calculating Bounding Boxes").build();
-		MapContract nodeCellId = MapContract.builder(NodeCellId.class)
+		MapContract nodeCellId = MapContract.builder(CellId.class)
 				.input(nodeBBox).name("Assigning CellId").build();
-		
+
 		//  Area mappers
 
 		MapContract areaInput = MapContract.builder(GeometryInput.class)
 				.input(areaSource).name("Reading area data").build();
 		MapContract areaBBox = MapContract.builder(BoundingBox.class)
 				.input(areaInput).name("Calculating Bounding Boxes").build();
-		MapContract areaCellId = MapContract.builder(AreaCellId.class)
+		MapContract areaCellId = MapContract.builder(CellId.class)
 				.input(areaBBox).name("Assigning CellId").build();
-		
+
 		// Id Matcher
 		MatchContract idMatcher = MatchContract.builder(IdMatcher.class, PactString.class, 0, 0)
 				.input1(nodeCellId).input2(areaCellId).name("Matching by Cell Ids").build();
-		
+
 		// Reduce
 		ReduceContract nodeReducer = ReduceContract.builder(NodeReducer.class,
 				PactString.class, 0).input(idMatcher).name("Reduce by Node Ids").build();
@@ -79,7 +78,7 @@ public class AreaAssignerMain implements PlanAssembler, PlanAssemblerDescription
 				.field(PactString.class, 0)
 				.field(PactString.class, 1);
 
-		Plan plan = new Plan(out, "WordCount Example");
+		Plan plan = new Plan(out, "AreaAssigner");
 		plan.setDefaultParallelism(noSubTasks);
 		return plan;
 	}
