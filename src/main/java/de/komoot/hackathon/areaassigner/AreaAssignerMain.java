@@ -150,7 +150,7 @@ public class AreaAssignerMain implements PlanAssembler, PlanAssemblerDescription
                         .input(nodeBBox).name("Assigning CellId").build();
 //  Area mappers
                 
-                MapContract areaInput = MapContract.builder(AreaInput.class)
+                MapContract areaInput = MapContract.builder(GeometryInput.class)
                         .input(areaSource).name("Reading area data").build();
                 MapContract areaBBox = MapContract.builder(AreaBBox.class)
                         .input(areaInput).name("Calculating Bounding Boxes").build();

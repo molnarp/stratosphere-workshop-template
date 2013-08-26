@@ -28,6 +28,7 @@ import eu.stratosphere.pact.common.type.PactRecord;
 import eu.stratosphere.pact.common.type.base.PactString;
 
 public class GeometryInput extends MapStub {
+	
 	// initialize reusable mutable objects
 	private final PactRecord outputRecord = new PactRecord();
 	private final PactString nodeId = new PactString();
