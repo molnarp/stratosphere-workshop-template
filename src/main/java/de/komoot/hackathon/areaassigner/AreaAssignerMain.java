@@ -180,7 +180,7 @@ public class AreaAssignerMain implements PlanAssembler, PlanAssemblerDescription
 	 * {@inheritDoc}
 	 */
 	public String getDescription() {
-		return "Parameters: [noSubStasks] [input] [output]";
+		return "Parameters: [noSubStasks] [nodeinput] [areainput] [output]";
 	}
 
 }
