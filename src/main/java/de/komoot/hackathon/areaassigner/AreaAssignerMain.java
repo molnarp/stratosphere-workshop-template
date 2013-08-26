@@ -132,8 +132,8 @@ public class AreaAssignerMain implements PlanAssembler, PlanAssemblerDescription
 		// parse job parameters
 		int noSubTasks = (args.length > 0 ? Integer.parseInt(args[0]) : 1);
 		String nodeDataInput = (args.length > 1 ? args[1] : "");
-		String areaDataInput = (args.length > 2 ? args[1] : "");
-		String output = (args.length > 3 ? args[2] : "");
+		String areaDataInput = (args.length > 2 ? args[2] : "");
+		String output = (args.length > 3 ? args[3] : "");
 //  Input source
 		FileDataSource nodeSource = new FileDataSource(TextInputFormat.class,
 				nodeDataInput, "Input Lines");
