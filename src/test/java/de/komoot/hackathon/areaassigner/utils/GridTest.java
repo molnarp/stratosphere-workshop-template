@@ -1,9 +1,6 @@
 package de.komoot.hackathon.areaassigner.utils;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.PrecisionModel;
+import com.vividsolutions.jts.geom.*;
 import org.junit.*;
 
 import java.util.HashSet;
@@ -24,14 +21,32 @@ public class GridTest {
 	}
 
 	@Test
-	public void testGetCellIds() throws Exception {
-		Point point = factory.createPoint(new Coordinate(0.01, 0.01));
+	public void testGetCellIdsPoint() throws Exception {
+		Point point = factory.createPoint(new Coordinate(19.01804, 47.48748));
 		Set<String> cellIds = Grid.getCellIds(point);
 
 		HashSet<String> expected = new HashSet<>();
-		expected.add("0:0");
+		expected.add("2264:1432");
 
 		assertEquals(expected.size(), cellIds.size());
-		//assertTrue(expected.containsAll(cellIds));
+		assertTrue(expected.containsAll(cellIds));
+	}
+
+	@Test
+	public void testGetCellIdsPolygon() throws Exception {
+		Coordinate c = new Coordinate(19.01804, 47.48748);
+
+		Point point = factory.createPoint(c);
+		Geometry area = point.buffer(0.03);
+
+		Set<String> cellIds = Grid.getCellIds(area);
+
+		HashSet<String> expected = new HashSet<>();
+		expected.add("2264:1431");
+		expected.add("2264:1432");
+		expected.add("2264:1433");
+
+		assertEquals(expected.size(), cellIds.size());
+		assertTrue(expected.containsAll(cellIds));
 	}
 }
