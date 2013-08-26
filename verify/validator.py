@@ -65,6 +65,7 @@ def parseString(lineText):
 def cleanUpStrings(lineText):
 	# because life isnt always clean and easy
 	# dirty quickfix
+	lineText = lineText.replace("\n","")
 	return lineText.replace("\",\"","") 
 
 def geoObjFromLine(lineData):
