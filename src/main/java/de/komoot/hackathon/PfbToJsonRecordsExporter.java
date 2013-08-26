@@ -24,7 +24,7 @@ public class PfbToJsonRecordsExporter {
 		try(BufferedWriter nwriter = createWriter(new File(directory, "nodes-raw.csv.gz"))) {
 			try(BufferedWriter lwriter = createWriter(new File(directory, "ways-raw.csv.gz"))) {
 				try(BufferedWriter awriter = createWriter(new File(directory, "areas-raw.csv.gz"))) {
-					OsmToKmtSink out = new OsmToKmtSink(NUMBEROFNODES, nwriter, lwriter, awriter);
+					OsmToKmtSink out = new OsmToKmtSink(1000, nwriter, lwriter, awriter);
 					in.setSink(out);
 					in.run();
 				}
