@@ -78,7 +78,7 @@ public class AreaAssignerMain implements PlanAssembler, PlanAssemblerDescription
 				.field(PactString.class, 0)
 				.field(PactString.class, 1);
 
-		Plan plan = new Plan(out, "WordCount Example");
+		Plan plan = new Plan(out, "AreaAssigner");
 		plan.setDefaultParallelism(noSubTasks);
 		return plan;
 	}
