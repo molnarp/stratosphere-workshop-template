@@ -20,6 +20,7 @@ import java.util.Iterator;
 import eu.stratosphere.pact.common.contract.FileDataSink;
 import eu.stratosphere.pact.common.contract.FileDataSource;
 import eu.stratosphere.pact.common.contract.MapContract;
+import eu.stratosphere.pact.common.contract.MatchContract;
 import eu.stratosphere.pact.common.contract.ReduceContract;
 import eu.stratosphere.pact.common.contract.ReduceContract.Combinable;
 import eu.stratosphere.pact.common.io.RecordOutputFormat;
@@ -130,25 +131,45 @@ public class AreaAssignerMain implements PlanAssembler, PlanAssemblerDescription
 	public Plan getPlan(String... args) {
 		// parse job parameters
 		int noSubTasks = (args.length > 0 ? Integer.parseInt(args[0]) : 1);
-		String dataInput = (args.length > 1 ? args[1] : "");
-		String output = (args.length > 2 ? args[2] : "");
+		String nodeDataInput = (args.length > 1 ? args[1] : "");
+		String areaDataInput = (args.length > 2 ? args[1] : "");
+		String output = (args.length > 3 ? args[2] : "");
+//  Input source
+		FileDataSource nodeSource = new FileDataSource(TextInputFormat.class,
+				nodeDataInput, "Input Lines");
+		FileDataSource areaSource = new FileDataSource(TextInputFormat.class,
+				areaDataInput, "Input Lines");
 
-		FileDataSource source = new FileDataSource(TextInputFormat.class,
-				dataInput, "Input Lines");
-		source.setParameter(TextInputFormat.CHARSET_NAME, "ASCII"); // comment
-																	// out this
-																	// line for
-																	// UTF-8
-																	// inputs
-		MapContract mapper = MapContract.builder(TokenizeLine.class)
-				.input(source).name("Tokenize Lines").build();
-		ReduceContract reducer = new ReduceContract.Builder(CountWords.class,
-				PactString.class, 0).input(mapper).name("Count Words").build();
+//  Node mappers
+                
+                MapContract nodeInput = MapContract.builder(NodeInput.class)
+                        .input(nodeSource).name("Reading node data").build();
+                MapContract nodeBBox = MapContract.builder(NodeBBox.class)
+                        .input(nodeInput).name("Calculating Bounding Boxes").build();
+                MapContract nodeCellId = MapContract.builder(NodeCellId.class)
+                        .input(nodeBBox).name("Assigning CellId").build();
+//  Area mappers
+                
+                MapContract areaInput = MapContract.builder(AreaInput.class)
+                        .input(areaSource).name("Reading area data").build();
+                MapContract areaBBox = MapContract.builder(AreaBBox.class)
+                        .input(areaInput).name("Calculating Bounding Boxes").build();
+                MapContract areaCellId = MapContract.builder(AreaCellId.class)
+                        .input(areaBBox).name("Assigning CellId").build();
+// Id Matcher
+                MatchContract idMatcher = MatchContract.builder(IdMatcher.class, PactInteger.class, 0,0)
+                        .input1(nodeCellId).input2(areaCellId).name("Matching by Cell Ids").build();
+//              Reduce
+                ReduceContract nodeReducer = ReduceContract.builder(NodeReducer.class,
+				PactString.class, 0).input(idMatcher).name("Reduce by Node Ids").build();
+// Output
 		FileDataSink out = new FileDataSink(RecordOutputFormat.class, output,
-				reducer, "Word Counts");
+				nodeReducer, "Reduced Values");
+                
 		RecordOutputFormat.configureRecordFormat(out).recordDelimiter('\n')
-				.fieldDelimiter(' ').lenient(true).field(PactString.class, 0)
-				.field(PactInteger.class, 1);
+				.fieldDelimiter('#').lenient(true)
+                                .field(PactString.class, 0)
+				.field(PactString.class, 1);
 
 		Plan plan = new Plan(out, "WordCount Example");
 		plan.setDefaultParallelism(noSubTasks);
