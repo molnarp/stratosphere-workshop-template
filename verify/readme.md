@@ -7,4 +7,4 @@ Usage:
 	python run_validator.py <benchMarkFileName> <yourTestResultFileName>
 
 
-You should take the dataset from http://dev.komoot.de/workshop (json input files and benchmark csv files).
+You should take the dataset from http://dev.komoot.de/workshop (json input files `*-raw.csv.gz` and benchmark csv files `*-with-areas.csv`).
