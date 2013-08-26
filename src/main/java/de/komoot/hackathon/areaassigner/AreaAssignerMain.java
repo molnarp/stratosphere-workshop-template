@@ -35,13 +35,14 @@ public class AreaAssignerMain implements PlanAssembler, PlanAssemblerDescription
 		// parse job parameters
 		int noSubTasks = (args.length > 0 ? Integer.parseInt(args[0]) : 1);
 		String nodeDataInput = (args.length > 1 ? args[1] : "");
-		String areaDataInput = (args.length > 2 ? args[1] : "");
-		String output = (args.length > 3 ? args[2] : "");
+		String areaDataInput = (args.length > 2 ? args[2] : "");
+		String output = (args.length > 3 ? args[3] : "");
+		
 		//  Input source
 		FileDataSource nodeSource = new FileDataSource(TextInputFormat.class,
-				nodeDataInput, "Input Lines");
+				nodeDataInput, "Input Nodes");
 		FileDataSource areaSource = new FileDataSource(TextInputFormat.class,
-				areaDataInput, "Input Lines");
+				areaDataInput, "Input Areas");
 
 		//  Node mappers
 
@@ -51,6 +52,7 @@ public class AreaAssignerMain implements PlanAssembler, PlanAssemblerDescription
 				.input(nodeInput).name("Calculating Bounding Boxes").build();
 		MapContract nodeCellId = MapContract.builder(NodeCellId.class)
 				.input(nodeBBox).name("Assigning CellId").build();
+		
 		//  Area mappers
 
 		MapContract areaInput = MapContract.builder(GeometryInput.class)
@@ -59,10 +61,12 @@ public class AreaAssignerMain implements PlanAssembler, PlanAssemblerDescription
 				.input(areaInput).name("Calculating Bounding Boxes").build();
 		MapContract areaCellId = MapContract.builder(AreaCellId.class)
 				.input(areaBBox).name("Assigning CellId").build();
+		
 		// Id Matcher
-		MatchContract idMatcher = MatchContract.builder(IdMatcher.class, PactInteger.class, 0, 0)
+		MatchContract idMatcher = MatchContract.builder(IdMatcher.class, PactString.class, 0, 0)
 				.input1(nodeCellId).input2(areaCellId).name("Matching by Cell Ids").build();
-		//              Reduce
+		
+		// Reduce
 		ReduceContract nodeReducer = ReduceContract.builder(NodeReducer.class,
 				PactString.class, 0).input(idMatcher).name("Reduce by Node Ids").build();
 		// Output

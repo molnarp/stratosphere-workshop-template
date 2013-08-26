@@ -33,8 +33,8 @@ import java.util.List;
  * @author christoph
  */
 
-@ConstantFields(fields = {})
-@OutCardBounds(lowerBound = 0, upperBound = OutCardBounds.UNBOUNDED)
+//@ConstantFields(fields = {})
+//@OutCardBounds(lowerBound = 0, upperBound = OutCardBounds.UNBOUNDED)
 public class NodeCellId extends MapStub {
 	// initialize reusable mutable objects
 	private final PactRecord outputRecord = new PactRecord();
