@@ -15,37 +15,19 @@
 
 package de.komoot.hackathon.areaassigner;
 
-import java.util.Iterator;
-
-import eu.stratosphere.pact.common.contract.FileDataSink;
-import eu.stratosphere.pact.common.contract.FileDataSource;
-import eu.stratosphere.pact.common.contract.MapContract;
-import eu.stratosphere.pact.common.contract.MatchContract;
-import eu.stratosphere.pact.common.contract.ReduceContract;
-import eu.stratosphere.pact.common.contract.ReduceContract.Combinable;
+import eu.stratosphere.pact.common.contract.*;
 import eu.stratosphere.pact.common.io.RecordOutputFormat;
 import eu.stratosphere.pact.common.io.TextInputFormat;
 import eu.stratosphere.pact.common.plan.Plan;
 import eu.stratosphere.pact.common.plan.PlanAssembler;
 import eu.stratosphere.pact.common.plan.PlanAssemblerDescription;
-import eu.stratosphere.pact.common.stubs.Collector;
-import eu.stratosphere.pact.common.stubs.MapStub;
-import eu.stratosphere.pact.common.stubs.ReduceStub;
-import eu.stratosphere.pact.common.stubs.StubAnnotation.ConstantFields;
-import eu.stratosphere.pact.common.stubs.StubAnnotation.OutCardBounds;
-import eu.stratosphere.pact.common.type.PactRecord;
 import eu.stratosphere.pact.common.type.base.PactInteger;
 import eu.stratosphere.pact.common.type.base.PactString;
-import eu.stratosphere.pact.example.util.AsciiUtils;
 
 /**
- * Implements a word count which takes the input file and counts the number of
- * the occurrences of each word in the file.
- * 
- * @author Larysa, Moritz Kaufmann, Stephan Ewen
+ *
  */
 public class AreaAssignerMain implements PlanAssembler, PlanAssemblerDescription {
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -55,41 +37,41 @@ public class AreaAssignerMain implements PlanAssembler, PlanAssemblerDescription
 		String nodeDataInput = (args.length > 1 ? args[1] : "");
 		String areaDataInput = (args.length > 2 ? args[1] : "");
 		String output = (args.length > 3 ? args[2] : "");
-//  Input source
+		//  Input source
 		FileDataSource nodeSource = new FileDataSource(TextInputFormat.class,
 				nodeDataInput, "Input Lines");
 		FileDataSource areaSource = new FileDataSource(TextInputFormat.class,
 				areaDataInput, "Input Lines");
 
-//  Node mappers
-                
-                MapContract nodeInput = MapContract.builder(GeometryInput.class)
-                        .input(nodeSource).name("Reading node data").build();
-                MapContract nodeBBox = MapContract.builder(BoundingBox.class)
-                        .input(nodeInput).name("Calculating Bounding Boxes").build();
-                MapContract nodeCellId = MapContract.builder(NodeCellId.class)
-                        .input(nodeBBox).name("Assigning CellId").build();
-//  Area mappers
-                
-                MapContract areaInput = MapContract.builder(GeometryInput.class)
-                        .input(areaSource).name("Reading area data").build();
-                MapContract areaBBox = MapContract.builder(BoundingBox.class)
-                        .input(areaInput).name("Calculating Bounding Boxes").build();
-                MapContract areaCellId = MapContract.builder(AreaCellId.class)
-                        .input(areaBBox).name("Assigning CellId").build();
-// Id Matcher
-                MatchContract idMatcher = MatchContract.builder(IdMatcher.class, PactInteger.class, 0,0)
-                        .input1(nodeCellId).input2(areaCellId).name("Matching by Cell Ids").build();
-//              Reduce
-                ReduceContract nodeReducer = ReduceContract.builder(NodeReducer.class,
+		//  Node mappers
+
+		MapContract nodeInput = MapContract.builder(GeometryInput.class)
+				.input(nodeSource).name("Reading node data").build();
+		MapContract nodeBBox = MapContract.builder(BoundingBox.class)
+				.input(nodeInput).name("Calculating Bounding Boxes").build();
+		MapContract nodeCellId = MapContract.builder(NodeCellId.class)
+				.input(nodeBBox).name("Assigning CellId").build();
+		//  Area mappers
+
+		MapContract areaInput = MapContract.builder(GeometryInput.class)
+				.input(areaSource).name("Reading area data").build();
+		MapContract areaBBox = MapContract.builder(BoundingBox.class)
+				.input(areaInput).name("Calculating Bounding Boxes").build();
+		MapContract areaCellId = MapContract.builder(AreaCellId.class)
+				.input(areaBBox).name("Assigning CellId").build();
+		// Id Matcher
+		MatchContract idMatcher = MatchContract.builder(IdMatcher.class, PactInteger.class, 0, 0)
+				.input1(nodeCellId).input2(areaCellId).name("Matching by Cell Ids").build();
+		//              Reduce
+		ReduceContract nodeReducer = ReduceContract.builder(NodeReducer.class,
 				PactString.class, 0).input(idMatcher).name("Reduce by Node Ids").build();
-// Output
+		// Output
 		FileDataSink out = new FileDataSink(RecordOutputFormat.class, output,
 				nodeReducer, "Reduced Values");
-                
+
 		RecordOutputFormat.configureRecordFormat(out).recordDelimiter('\n')
 				.fieldDelimiter('#').lenient(true)
-                                .field(PactString.class, 0)
+				.field(PactString.class, 0)
 				.field(PactString.class, 1);
 
 		Plan plan = new Plan(out, "WordCount Example");
@@ -103,5 +85,4 @@ public class AreaAssignerMain implements PlanAssembler, PlanAssemblerDescription
 	public String getDescription() {
 		return "Parameters: [noSubStasks] [nodeinput] [areainput] [output]";
 	}
-
 }

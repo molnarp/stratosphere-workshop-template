@@ -38,10 +38,10 @@ public class PactEnvelope implements Value {
 
   @Override
   public void read(DataInput dataInput) throws IOException {
-    double maxY = dataInput.readDouble();
-    double minY = dataInput.readDouble();
-    double maxX = dataInput.readDouble();
     double minX = dataInput.readDouble();
+    double maxX = dataInput.readDouble();
+    double minY = dataInput.readDouble();
+    double maxY = dataInput.readDouble();
     envelope = new Envelope(minX, maxX, minY, maxY);
   }
 }
