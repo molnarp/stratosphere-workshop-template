@@ -10,5 +10,5 @@
 /.settings
 /classpath.txt
 /out/
-
+/.idea/
 *.iml
