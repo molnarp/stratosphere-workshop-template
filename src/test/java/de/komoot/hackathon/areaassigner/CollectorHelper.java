@@ -1,4 +1,4 @@
-package hu.sztaki.ilab.cumulonimbus.helper;
+package de.komoot.hackathon.areaassigner;
 
 import java.util.ArrayList;
 import java.util.List;
