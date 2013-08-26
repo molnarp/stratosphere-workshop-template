@@ -142,7 +142,7 @@ public class AreaAssignerMain implements PlanAssembler, PlanAssemblerDescription
 
 //  Node mappers
                 
-                MapContract nodeInput = MapContract.builder(NodeInput.class)
+                MapContract nodeInput = MapContract.builder(GeometryInput.class)
                         .input(nodeSource).name("Reading node data").build();
                 MapContract nodeBBox = MapContract.builder(NodeBBox.class)
                         .input(nodeInput).name("Calculating Bounding Boxes").build();
