@@ -15,14 +15,14 @@
 
 package de.komoot.hackathon.areaassigner;
 
-import de.komoot.hackathon.Grid;
 import de.komoot.hackathon.areaassigner.model.PactGeometry;
+import de.komoot.hackathon.areaassigner.utils.Grid;
 import eu.stratosphere.pact.common.stubs.Collector;
 import eu.stratosphere.pact.common.stubs.MapStub;
 import eu.stratosphere.pact.common.type.PactRecord;
 import eu.stratosphere.pact.common.type.base.PactString;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * assigns a node to a cell id
@@ -33,7 +33,6 @@ import java.util.List;
 public class CellId extends MapStub {
 	private final PactRecord outputRecord = new PactRecord();
 	private final PactString cellId = new PactString();
-	private Grid grid = new Grid(1);
 
 	@Override
 	public void map(PactRecord record, Collector<PactRecord> collector) {
@@ -43,7 +42,7 @@ public class CellId extends MapStub {
 		this.outputRecord.setField(1, itemId);
 		this.outputRecord.setField(2, point);
 
-		List<String> cellIds = grid.getIdsForGeometry(point.getGeometry());
+		Set<String> cellIds = Grid.getCellIds(point.getGeometry());
 		for(String cellId : cellIds) {
 			this.cellId.setValue(cellId);
 			this.outputRecord.setField(0, this.cellId);
