@@ -17,10 +17,10 @@ public class Grid {
 		Envelope envelope = geom.getEnvelopeInternal();
 
 		int xMin = getX(envelope.getMinX());
-		int yMin = getY(envelope.getMinY());
+		int yMax = getY(envelope.getMinY());
 
 		int xMax = getX(envelope.getMaxX());
-		int yMax = getY(envelope.getMaxY());
+		int yMin = getY(envelope.getMaxY());
 
 		HashSet<String> cellIds = new HashSet<>();
 
