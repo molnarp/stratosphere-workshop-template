@@ -22,10 +22,11 @@ public class NodeReducer extends ReduceStub{
     public void reduce(Iterator<PactRecord> itrtr, Collector<PactRecord> clctr) throws Exception {
         tmp = itrtr.next();
         id = new PactString(tmp.getField(0, PactString.class).getValue());
+        buffer = new StringBuffer();
         buffer.append(tmp.getField(1, PactString.class).getValue());
         buffer.append(",");
         while (itrtr.hasNext()) {
-            buffer.append(tmp.getField(1, PactString.class).getValue());
+            buffer.append(itrtr.next().getField(1, PactString.class).getValue());
             buffer.append(",");
         }
         buffer.deleteCharAt(buffer.length()-1);
