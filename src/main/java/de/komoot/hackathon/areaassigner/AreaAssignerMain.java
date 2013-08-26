@@ -144,7 +144,7 @@ public class AreaAssignerMain implements PlanAssembler, PlanAssemblerDescription
                 
                 MapContract nodeInput = MapContract.builder(NodeInput.class)
                         .input(nodeSource).name("Reading node data").build();
-                MapContract nodeBBox = MapContract.builder(NodeBBox.class)
+                MapContract nodeBBox = MapContract.builder(BoundingBox.class)
                         .input(nodeInput).name("Calculating Bounding Boxes").build();
                 MapContract nodeCellId = MapContract.builder(NodeCellId.class)
                         .input(nodeBBox).name("Assigning CellId").build();
@@ -152,7 +152,7 @@ public class AreaAssignerMain implements PlanAssembler, PlanAssemblerDescription
                 
                 MapContract areaInput = MapContract.builder(AreaInput.class)
                         .input(areaSource).name("Reading area data").build();
-                MapContract areaBBox = MapContract.builder(AreaBBox.class)
+                MapContract areaBBox = MapContract.builder(BoundingBox.class)
                         .input(areaInput).name("Calculating Bounding Boxes").build();
                 MapContract areaCellId = MapContract.builder(AreaCellId.class)
                         .input(areaBBox).name("Assigning CellId").build();
