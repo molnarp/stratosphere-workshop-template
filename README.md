@@ -6,7 +6,7 @@ Install Java7 and maven3. You can use maven from the command line. Eclipse and I
 
 ## First task ##
 
-run the word count example
+you have to update the pom.xml to the latest version. then run `mvn package` 
 
 ## Second task ##
 
