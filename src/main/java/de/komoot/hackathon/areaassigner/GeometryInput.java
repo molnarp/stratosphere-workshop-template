@@ -31,7 +31,7 @@ public class GeometryInput extends MapStub {
 	
 	// initialize reusable mutable objects
 	private final PactRecord outputRecord = new PactRecord();
-	private final PactString nodeId = new PactString();
+	private final PactString geometryId = new PactString();
 	private final PactGeometry geometry = new PactGeometry();
 	private final ObjectMapper mapper;
 	
@@ -46,16 +46,15 @@ public class GeometryInput extends MapStub {
 			throws Exception {
 		
 		PactString line = record.getField(0, PactString.class);
-		
-		JsonGeometryEntity<Geometry> entry ;
+		JsonGeometryEntity<Geometry> entry;
 		
 		try {
 			entry = mapper.readValue(line.getValue(), JsonGeometryEntity.class);
 			
-			nodeId.setValue(entry.getId());
+			geometryId.setValue(entry.getId());
 			geometry.setValue(entry.getGeometry());
 			
-			record.setField(0, nodeId);
+			record.setField(0, geometryId);
 			record.setField(1, geometry);
 			
 			collector.collect(outputRecord);
