@@ -24,8 +24,8 @@ public class Grid {
 
 		HashSet<String> cellIds = new HashSet<>();
 
-		for(int x = xMin; x < xMax; x++) {
-			for(int y = yMin; y < yMax; y++) {
+		for(int x = xMin; x <= xMax; x++) {
+			for(int y = yMin; y <= yMax; y++) {
 				cellIds.add(getTileId(x, y));
 			}
 		}
