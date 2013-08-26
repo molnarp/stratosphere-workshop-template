@@ -54,8 +54,8 @@ public class GeometryInput extends MapStub {
 			geometryId.setValue(entry.getId());
 			geometry.setValue(entry.getGeometry());
 			
-			record.setField(0, geometryId);
-			record.setField(1, geometry);
+			outputRecord.setField(0, geometryId);
+			outputRecord.setField(1, geometry);
 			
 			collector.collect(outputRecord);
 			
