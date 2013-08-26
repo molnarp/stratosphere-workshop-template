@@ -16,7 +16,21 @@ import java.io.IOException;
  */
 public class PactGeometry implements Value {
 	private Geometry geometry;
+	
+	public PactGeometry() {
+	}
+	public PactGeometry(Geometry geometry) {
+		this.geometry = geometry;
+	}
 
+	public void setValue(Geometry geometry) {
+		this.geometry = geometry;
+	}
+	
+	public Geometry getValue() {
+		return geometry;
+	}
+	
 	public Geometry getGeometry() {
 		return geometry;
 	}

@@ -135,7 +135,7 @@ public class WordCount implements PlanAssembler, PlanAssemblerDescription {
 
 		FileDataSource source = new FileDataSource(TextInputFormat.class,
 				dataInput, "Input Lines");
-		source.setParameter(TextInputFormat.CHARSET_NAME, "ASCII"); // comment
+		//source.setParameter(TextInputFormat.CHARSET_NAME, "ASCII"); // comment
 																	// out this
 																	// line for
 																	// UTF-8

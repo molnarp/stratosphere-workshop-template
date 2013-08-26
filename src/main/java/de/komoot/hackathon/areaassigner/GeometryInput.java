@@ -15,47 +15,56 @@
 
 package de.komoot.hackathon.areaassigner;
 
-import de.komoot.hackathon.Grid;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vividsolutions.jts.geom.Geometry;
+
 import de.komoot.hackathon.areaassigner.model.PactGeometry;
+import de.komoot.hackathon.openstreetmap.GeometryModule;
+import de.komoot.hackathon.openstreetmap.JsonGeometryEntity;
 import eu.stratosphere.pact.common.stubs.Collector;
 import eu.stratosphere.pact.common.stubs.MapStub;
-import eu.stratosphere.pact.common.stubs.StubAnnotation.ConstantFields;
-import eu.stratosphere.pact.common.stubs.StubAnnotation.OutCardBounds;
 import eu.stratosphere.pact.common.type.PactRecord;
-import eu.stratosphere.pact.common.type.base.PactInteger;
 import eu.stratosphere.pact.common.type.base.PactString;
 
-import java.util.List;
-
-/**
- * assigns a node to a cell id
- *
- * @author christoph
- */
-
-@ConstantFields(fields = {})
-@OutCardBounds(lowerBound = 0, upperBound = OutCardBounds.UNBOUNDED)
-public class NodeCellId extends MapStub {
+public class GeometryInput extends MapStub {
+	
 	// initialize reusable mutable objects
 	private final PactRecord outputRecord = new PactRecord();
-	private final PactString cellId = new PactString();
-	public Grid grid = new Grid(0.1);
-
-	@Override
-	public void map(PactRecord record, Collector<PactRecord> collector) {
-		PactInteger nodeId = record.getField(0, PactInteger.class);
-		PactGeometry pactEnvelope = record.getField(1, PactGeometry.class);
-		PactGeometry point = record.getField(2, PactGeometry.class);
-
-		this.outputRecord.setField(1, nodeId);
-		this.outputRecord.setField(2, point);
-
-		// tokenize the line
-		List<String> cellIds = grid.getIdsForGeometry(point.getGeometry());
-		for(String cellId : cellIds) {
-			this.cellId.setValue(cellId);
-			this.outputRecord.setField(0, this.cellId);
-			collector.collect(this.outputRecord);
-		}
+	private final PactString nodeId = new PactString();
+	private final PactGeometry geometry = new PactGeometry();
+	private final ObjectMapper mapper;
+	
+	public GeometryInput() {
+		mapper = new ObjectMapper();
+		mapper.registerModule(new GeometryModule());
+		mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
 	}
+	
+	@Override
+	public void map(PactRecord record, Collector<PactRecord> collector)
+			throws Exception {
+		
+		PactString line = record.getField(0, PactString.class);
+		
+		JsonGeometryEntity<Geometry> entry ;
+		
+		try {
+			entry = mapper.readValue(line.getValue(), JsonGeometryEntity.class);
+			
+			nodeId.setValue(entry.getId());
+			geometry.setValue(entry.getGeometry());
+			
+			record.setField(0, nodeId);
+			record.setField(1, geometry);
+			
+			collector.collect(outputRecord);
+			
+		} catch (RuntimeException e) {
+			throw new RuntimeException("Unable to parse line: " + line + ":", e);
+		}
+		
+		
+	}
+
 }
