@@ -33,7 +33,7 @@ import java.util.List;
 public class CellId extends MapStub {
 	private final PactRecord outputRecord = new PactRecord();
 	private final PactString cellId = new PactString();
-	private Grid grid = new Grid(0.1);
+	private Grid grid = new Grid(1);
 
 	@Override
 	public void map(PactRecord record, Collector<PactRecord> collector) {
