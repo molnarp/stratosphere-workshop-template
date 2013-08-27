@@ -22,6 +22,7 @@ abstract public class GeometryUtils {
         Coordinate c1 = null;
         for (Coordinate c : input.getCoordinates()) {
             if (c1 == null) {
+                c1 = c;
                 continue;
             }
             
