@@ -43,7 +43,6 @@ public class GridTest {
             GeometryFactory gf = new GeometryFactory();
             Point p = gf.createPoint(new Coordinate(1,1));
             
-            
         }
 
 
