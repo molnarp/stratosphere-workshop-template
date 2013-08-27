@@ -24,7 +24,8 @@ public class StartingCellMap extends MapStub {
     
     Geometry geometry = geometryRecord.getField(1, PactGeometry.class).getGeometry();
 
-    Set<String> cellIds = NewGrid.getCellIds(geometry);
+    NewGrid grid = new NewGrid(4);
+    Set<String> cellIds = grid.getCellIds(geometry);
     for(String cellId : cellIds) {
       this.cellId.setValue(cellId);
       this.outputRecord.setField(0, this.cellId);
