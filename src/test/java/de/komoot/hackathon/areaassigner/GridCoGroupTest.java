@@ -17,7 +17,7 @@ import org.junit.Test;
  * @author molnarp
  */
 public class GridCoGroupTest {
-    @Test public void testGridCoGroupUnderTreshold() {
+    @Test public void testGridCoGroupUnderThreshold() {
         PactRecord c1 = new PactRecord();
         c1.setField(0, new PactString("N1"));
         c1.setField(1, new PactInteger(2));
@@ -32,6 +32,29 @@ public class GridCoGroupTest {
 
         GridCoGroup gcg = new GridCoGroup();
         gcg.setThreshold(3);
+        
+        CollectorHelper ch = new CollectorHelper();
+        
+        gcg.coGroup(countersIn.iterator(), nodesIn.iterator(), ch);
+        
+        Assert.assertEquals(2, ch.size());
+    }
+    
+    @Test public void testGridCoGroupOverThreshold() {
+        PactRecord c1 = new PactRecord();
+        c1.setField(0, new PactString("N1"));
+        c1.setField(1, new PactInteger(2));
+        List<PactRecord> countersIn = Arrays.asList(c1);
+        
+        PactRecord r1 = new PactRecord();
+        r1.setField(0, new PactString("N1"));
+        PactRecord r2 = new PactRecord();
+        r2.setField(0, new PactString("N1"));
+        
+        List<PactRecord> nodesIn = Arrays.asList(r1, r2);
+
+        GridCoGroup gcg = new GridCoGroup();
+        gcg.setThreshold(2);
         
         CollectorHelper ch = new CollectorHelper();
         

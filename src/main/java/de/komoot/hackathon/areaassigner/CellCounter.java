@@ -21,6 +21,7 @@ public class CellCounter extends ReduceStub {
       outputRecord.setField(0, records.next().getField(0, PactString.class));
       ++counter;
     }
+    
     this.integer.setValue(counter);
     outputRecord.setField(1, this.integer);
     out.collect(outputRecord);

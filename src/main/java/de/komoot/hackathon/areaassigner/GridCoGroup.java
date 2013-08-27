@@ -53,12 +53,15 @@ public class GridCoGroup extends CoGroupStub {
       return;  
     }
     
+    // Calculate the bounding box of the cell id
     String cellId = counterRec.getField(0, PactString.class).getValue();
+    
     String[] coordinates = cellId.split(",");
     double minX = Double.parseDouble(coordinates[0]);
     double maxX = Double.parseDouble(coordinates[1]);
     double minY = Double.parseDouble(coordinates[2]);
     double maxY = Double.parseDouble(coordinates[3]);
+    
     int zoom = (int) Math.round(Math.log(360 / (maxX - minX)) / Math.log(2));
     int newZoom = zoom + (int) (Math.log10(counter));
     
