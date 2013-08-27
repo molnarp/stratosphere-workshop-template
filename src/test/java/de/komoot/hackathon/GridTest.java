@@ -38,6 +38,12 @@ public class GridTest {
 		List<String> ids = g.getIdsForGeometry(p);
 		assertEquals(4,ids.size());
 	}
+        
+        public static void createTestData() {
+            GeometryFactory gf = new GeometryFactory();
+            Point p = gf.createPoint(new Coordinate(1,1));
+            
+        }
 
 
 }

@@ -23,7 +23,7 @@ public class GridTest {
 	@Test
 	public void testGetCellIdsPoint() throws Exception {
 		Point point = factory.createPoint(new Coordinate(19.01804, 47.48748));
-		Set<String> cellIds = Grid.getCellIds(point);
+		Set<String> cellIds = Grid.getCellIds(point, 12);
 
 		HashSet<String> expected = new HashSet<>();
 		expected.add("2264:1432");
@@ -39,7 +39,7 @@ public class GridTest {
 		Point point = factory.createPoint(c);
 		Geometry area = point.buffer(0.03);
 
-		Set<String> cellIds = Grid.getCellIds(area);
+		Set<String> cellIds = Grid.getCellIds(area, 12);
 
 		HashSet<String> expected = new HashSet<>();
 		expected.add("2264:1431");

@@ -122,7 +122,7 @@ public class OsmToKmtSink implements Sink, EntityProcessor {
 
 		Map<String, String> tags = convertTagsToMap(node.getTags());
 		Coordinate c = new Coordinate(node.getLongitude(), node.getLatitude());
-		OsmNode osmNode = new OsmNodeImpl(node.getId(), GEOMETRY_FACTORY.createPoint(c));
+		OsmNode osmNode = new OsmNodeImpl(node.getId(), c);
 		nodes.add(osmNode);
 		write(osmNode.getId(), osmNode.getGeometry(), tags, nodeswriter, mapper);
 	}
