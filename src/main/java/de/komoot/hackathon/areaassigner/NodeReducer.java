@@ -6,6 +6,8 @@ import eu.stratosphere.pact.common.stubs.Collector;
 import eu.stratosphere.pact.common.stubs.ReduceStub;
 import eu.stratosphere.pact.common.type.PactRecord;
 import eu.stratosphere.pact.common.type.base.PactString;
+import java.util.HashSet;
+import java.util.Set;
 
 /*
  * Reduce the same node and make the area list to the distinct node.
@@ -22,13 +24,21 @@ public class NodeReducer extends ReduceStub{
     public void reduce(Iterator<PactRecord> itrtr, Collector<PactRecord> clctr) throws Exception {
         tmp = itrtr.next();
         id = new PactString(tmp.getField(0, PactString.class).getValue());
-        buffer = new StringBuffer();
+        
+        buffer = new StringBuffer();        
         buffer.append(tmp.getField(1, PactString.class).getValue());
         buffer.append(",");
+        
+        Set<String> areaIds = new HashSet<>();
         while (itrtr.hasNext()) {
-            buffer.append(itrtr.next().getField(1, PactString.class).getValue());
+            areaIds.add(itrtr.next().getField(1, PactString.class).getValue());
+        }
+        
+        for (String areaId : areaIds) {
+            buffer.append(areaId);
             buffer.append(",");
         }
+        
         buffer.deleteCharAt(buffer.length()-1);
         outputRecord.setField(0, id);
         outputRecord.setField(1, new PactString(buffer.toString()));

@@ -9,6 +9,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 
 import de.komoot.hackathon.areaassigner.model.PactGeometry;
 import de.komoot.hackathon.areaassigner.utils.NewGrid;
+import eu.stratosphere.nephele.configuration.Configuration;
 
 import eu.stratosphere.pact.common.stubs.CoGroupStub;
 import eu.stratosphere.pact.common.stubs.Collector;
@@ -18,11 +19,27 @@ import eu.stratosphere.pact.common.type.base.PactString;
 
 public class GridCoGroup extends CoGroupStub {
 
-  private static final int threshold = 50;
+  private int threshold = 50;
   private final PactRecord outputRecord = new PactRecord();
   private PactRecord geomRecord;
   private final GeometryFactory factory = new GeometryFactory();
   private final PactString id = new PactString();
+
+    @Override
+    public void open(Configuration parameters) throws Exception {
+        super.open(parameters);
+        threshold = parameters.getInteger("threshold", 50);
+    }
+
+    public int getThreshold() {
+        return threshold;
+    }
+
+    public void setThreshold(int threshold) {
+        this.threshold = threshold;
+    }
+  
+  
   
   @Override
   public void coGroup(Iterator<PactRecord> counterRecord, Iterator<PactRecord> geometryRecords,
