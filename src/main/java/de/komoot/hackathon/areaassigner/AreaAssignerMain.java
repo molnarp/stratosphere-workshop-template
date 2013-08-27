@@ -36,6 +36,7 @@ public class AreaAssignerMain implements PlanAssembler, PlanAssemblerDescription
 		String nodeDataInput = (args.length > 1 ? args[1] : "");
 		String areaDataInput = (args.length > 2 ? args[2] : "");
 		String output = (args.length > 3 ? args[3] : "");
+		int zoom = (args.length > 4 ? Integer.parseInt(args[4]) : 12);
 
 		//  Input source
 		
