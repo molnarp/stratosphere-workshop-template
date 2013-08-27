@@ -52,8 +52,8 @@ public class AreaAssignerMainImproved implements PlanAssembler, PlanAssemblerDes
     // Reduce - count geometry per cellids
     ReduceContract countReducer = ReduceContract.builder(CellCounter.class,
         PactString.class, 0).input(nodeCellId, areaCellId).name("Counting the geomerty to cellids.").build();
-
-/*    // Refining the grid
+/*
+    // Refining the grid
     CoGroupContract gridCogroup = CoGroupContract.builder(GridCoGroup.class, PactString.class, 0, 0)
         .input1(countReducer)
         .input2(nodeCellId, areaCellId)
