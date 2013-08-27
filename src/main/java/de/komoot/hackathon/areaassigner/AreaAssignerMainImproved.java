@@ -11,13 +11,14 @@ import eu.stratosphere.pact.common.io.TextInputFormat;
 import eu.stratosphere.pact.common.plan.Plan;
 import eu.stratosphere.pact.common.plan.PlanAssembler;
 import eu.stratosphere.pact.common.plan.PlanAssemblerDescription;
+import eu.stratosphere.pact.common.type.base.PactInteger;
 import eu.stratosphere.pact.common.type.base.PactString;
 
 /**
  *
  */
 public class AreaAssignerMainImproved implements PlanAssembler, PlanAssemblerDescription {
-  /**
+   /**
    * {@inheritDoc}
    */
   public Plan getPlan(String... args) {
@@ -52,7 +53,7 @@ public class AreaAssignerMainImproved implements PlanAssembler, PlanAssemblerDes
     ReduceContract countReducer = ReduceContract.builder(CellCounter.class,
         PactString.class, 0).input(nodeCellId, areaCellId).name("Counting the geomerty to cellids.").build();
 
-    // Refining the grid
+/*    // Refining the grid
     CoGroupContract gridCogroup = CoGroupContract.builder(GridCoGroup.class, PactString.class, 0, 0)
         .input1(countReducer)
         .input2(nodeCellId, areaCellId)
@@ -87,14 +88,15 @@ public class AreaAssignerMainImproved implements PlanAssembler, PlanAssemblerDes
     // Reduce
     ReduceContract nodeReducer = ReduceContract.builder(NodeReducer.class,
         PactString.class, 0).input(idMatcher).name("Reduce by Node Ids").build();
+*/
     // Output
     FileDataSink out = new FileDataSink(RecordOutputFormat.class, output,
-        nodeReducer, "Reduced Values");
+        countReducer, "Reduced Values");
 
     RecordOutputFormat.configureRecordFormat(out).recordDelimiter('\n')
     .fieldDelimiter(',').lenient(true)
     .field(PactString.class, 0)
-    .field(PactString.class, 1);
+    .field(PactInteger.class, 1);
 
     Plan plan = new Plan(out, "AreaAssigner");
     plan.setDefaultParallelism(noSubTasks);

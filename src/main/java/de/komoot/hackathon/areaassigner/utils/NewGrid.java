@@ -12,10 +12,21 @@ public class NewGrid {
     this.zoom = zoom;
   }
   
+  public NewGrid (int zoom, Geometry geometry) {
+    this(zoom);
+    this.geometry = geometry;
+  }
+  
 	private int zoom;
-
+	private Geometry geometry;
+	
 	public Set<String> getCellIds(Geometry geom) {
-		Envelope envelope = geom.getEnvelopeInternal();
+	  Envelope envelope;
+		if (geometry == null) {
+		  envelope = geom.getEnvelopeInternal();
+		} else {
+		  envelope = geom.intersection(geometry).getEnvelopeInternal();
+		}
 
 		int xMin = getX(envelope.getMinX());
 		int yMax = getY(envelope.getMinY());
