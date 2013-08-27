@@ -48,7 +48,7 @@ public class AreaAssignerMainImproved implements PlanAssembler, PlanAssemblerDes
 				PactString.class, 0).input(nodeCellId, areaCellId).name("Counting the geomerty to cellids.").build();
                 
                 // Refining the grid
-                CoGroupContract gridCogroup = new CoGroupContract.Builder(GridCoGroup.class, PactString.class, 0, 0)
+                CoGroupContract gridCogroup = CoGroupContract.builder(GridCoGroup.class, PactString.class, 0, 0)
                         .input1(countReducer)
                         .input2(nodeCellId, areaCellId)
                         .name("Refining the grid based on density.")
@@ -60,7 +60,7 @@ public class AreaAssignerMainImproved implements PlanAssembler, PlanAssemblerDes
 				PactString.class, 0).input(gridCogroup, areaCellId).name("Counting the geomerty to cellids.").build();
                 
                 // Refining the grid
-                CoGroupContract gridCogroup2 = new CoGroupContract.Builder(GridCoGroup.class, PactString.class, 0, 0)
+                CoGroupContract gridCogroup2 = CoGroupContract.builder(GridCoGroup.class, PactString.class, 0, 0)
                         .input1(countReducer2)
                         .input2(gridCogroup)
                         .name("Refining the grid based on density.")
