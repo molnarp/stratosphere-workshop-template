@@ -113,6 +113,9 @@
             <goals>
               <goal>single</goal>
             </goals>
+            <configuration>
+                <finalName>${project.build.finalName}-molnarp</finalName>
+            </configuration>
           </execution>
         </executions>
       </plugin>

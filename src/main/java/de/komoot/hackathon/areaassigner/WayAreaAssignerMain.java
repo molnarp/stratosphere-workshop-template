@@ -22,6 +22,7 @@ import eu.stratosphere.pact.common.plan.Plan;
 import eu.stratosphere.pact.common.plan.PlanAssembler;
 import eu.stratosphere.pact.common.plan.PlanAssemblerDescription;
 import eu.stratosphere.pact.common.type.base.PactString;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -79,7 +80,20 @@ public class WayAreaAssignerMain implements PlanAssembler, PlanAssemblerDescript
 
 		Plan plan = new Plan(out, "WayAreaAssigner");
 		plan.setDefaultParallelism(noSubTasks);
+        
+        final Logger log = Logger.getLogger("eu.stratosphere.nephele.jobmanager.JobManager");
+        log.error("---- STARTING UP -----");
+        
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+
+            @Override
+            public void run() {
+                log.error("----- SHUTTING DOWN ------");
+            }
+            
+        });
 		return plan;
+        
 	}
 
 	/**
