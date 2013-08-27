@@ -26,8 +26,9 @@ public class CellIdTest {
 		cut = new CellId();
 	}
 
-	@Test
+	//@Test
 	public void testMap() throws Exception {
+        
 		PactRecord pactRecord = new PactRecord();
 
 		PactString nodeId = new PactString("N1234");
