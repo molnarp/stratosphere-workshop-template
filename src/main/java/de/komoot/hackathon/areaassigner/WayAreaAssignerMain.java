@@ -26,7 +26,7 @@ import eu.stratosphere.pact.common.type.base.PactString;
 /**
  *
  */
-public class AreaAssignerMain implements PlanAssembler, PlanAssemblerDescription {
+public class WayAreaAssignerMain implements PlanAssembler, PlanAssemblerDescription {
 	/**
 	 * {@inheritDoc}
 	 */
@@ -42,45 +42,42 @@ public class AreaAssignerMain implements PlanAssembler, PlanAssemblerDescription
 		//  Input source
 		
 		FileDataSource nodeSource = new FileDataSource(TextInputFormat.class,
-				nodeDataInput, "Input Nodes");
+				nodeDataInput, "Input Ways");
 		FileDataSource areaSource = new FileDataSource(TextInputFormat.class,
 				areaDataInput, "Input Areas");
 
-		//  Node mappers
+		//  Way mappers
 
-		MapContract nodeInput = MapContract.builder(GeometryInput.class)
-				.input(nodeSource).name("Reading node data").build();
-		MapContract nodeBBox = MapContract.builder(BoundingBox.class)
-				.input(nodeInput).name("Calculating Bounding Boxes").build();
-		MapContract nodeCellId = MapContract.builder(CellId.class)
-				.input(nodeBBox).name("Assigning CellId").build();
+		MapContract wayInput = MapContract.builder(GeometryInput.class)
+				.input(nodeSource).name("Reading way data").build();
+		MapContract wayCellId = MapContract.builder(WayCellId.class)
+				.input(wayInput).name("Assigning CellId").build();
+        wayCellId.setParameter("zoom", zoom);
 
 		//  Area mappers
 
 		MapContract areaInput = MapContract.builder(GeometryInput.class)
 				.input(areaSource).name("Reading area data").build();
-		MapContract areaBBox = MapContract.builder(BoundingBox.class)
-				.input(areaInput).name("Calculating Bounding Boxes").build();
 		MapContract areaCellId = MapContract.builder(CellId.class)
-				.input(areaBBox).name("Assigning CellId").build();
+				.input(areaInput).name("Assigning CellId").build();
 
 		// Id Matcher
 		MatchContract idMatcher = MatchContract.builder(IdMatcher.class, PactString.class, 0, 0)
-				.input1(nodeCellId).input2(areaCellId).name("Matching by Cell Ids").build();
+				.input1(wayCellId).input2(areaCellId).name("Matching by Cell Ids").build();
 
 		// Reduce
-		ReduceContract nodeReducer = ReduceContract.builder(NodeReducer.class,
-				PactString.class, 0).input(idMatcher).name("Reduce by Node Ids").build();
+		ReduceContract wayReducer = ReduceContract.builder(NodeReducer.class,
+				PactString.class, 0).input(idMatcher).name("Reduce by Way Ids").build();
 		// Output
 		FileDataSink out = new FileDataSink(RecordOutputFormat.class, output,
-				nodeReducer, "Reduced Values");
+				wayReducer, "Reduced Values");
 
 		RecordOutputFormat.configureRecordFormat(out).recordDelimiter('\n')
-				.fieldDelimiter('#').lenient(true)
+				.fieldDelimiter(',').lenient(true)
 				.field(PactString.class, 0)
 				.field(PactString.class, 1);
 
-		Plan plan = new Plan(out, "AreaAssigner");
+		Plan plan = new Plan(out, "WayAreaAssigner");
 		plan.setDefaultParallelism(noSubTasks);
 		return plan;
 	}
@@ -89,6 +86,6 @@ public class AreaAssignerMain implements PlanAssembler, PlanAssemblerDescription
 	 * {@inheritDoc}
 	 */
 	public String getDescription() {
-		return "Parameters: [noSubStasks] [nodeinput] [areainput] [output]";
+		return "Parameters: [noSubStasks] [nodeinput] [areainput] [output] [zoom]";
 	}
 }
