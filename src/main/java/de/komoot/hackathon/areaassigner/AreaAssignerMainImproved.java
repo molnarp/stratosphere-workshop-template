@@ -52,7 +52,7 @@ public class AreaAssignerMainImproved implements PlanAssembler, PlanAssemblerDes
     // Reduce - count geometry per cellids
     ReduceContract countReducer = ReduceContract.builder(CellCounter.class,
         PactString.class, 0).input(nodeCellId, areaCellId).name("Counting the geomerty to cellids.").build();
-/*
+
     // Refining the grid
     CoGroupContract gridCogroup = CoGroupContract.builder(GridCoGroup.class, PactString.class, 0, 0)
         .input1(countReducer)
@@ -88,15 +88,15 @@ public class AreaAssignerMainImproved implements PlanAssembler, PlanAssemblerDes
     // Reduce
     ReduceContract nodeReducer = ReduceContract.builder(NodeReducer.class,
         PactString.class, 0).input(idMatcher).name("Reduce by Node Ids").build();
-*/
+
     // Output
     FileDataSink out = new FileDataSink(RecordOutputFormat.class, output,
-        countReducer, "Reduced Values");
+        nodeReducer, "Reduced Values");
 
     RecordOutputFormat.configureRecordFormat(out).recordDelimiter('\n')
     .fieldDelimiter(',').lenient(true)
     .field(PactString.class, 0)
-    .field(PactInteger.class, 1);
+    .field(PactString.class, 1);
 
     Plan plan = new Plan(out, "AreaAssigner");
     plan.setDefaultParallelism(noSubTasks);
