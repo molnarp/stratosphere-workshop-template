@@ -42,7 +42,7 @@ public class CellId extends MapStub {
 		this.outputRecord.setField(1, itemId);
 		this.outputRecord.setField(2, point);
 
-		Set<String> cellIds = Grid.getCellIds(point.getGeometry());
+		Set<String> cellIds = Grid.getCellIds(point.getGeometry(), 12);
 		for(String cellId : cellIds) {
 			this.cellId.setValue(cellId);
 			this.outputRecord.setField(0, this.cellId);
