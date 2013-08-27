@@ -8,14 +8,17 @@ import eu.stratosphere.pact.common.stubs.Collector;
 import eu.stratosphere.pact.common.type.PactRecord;
 import eu.stratosphere.pact.common.type.base.PactString;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *
@@ -58,7 +61,15 @@ public class NodeReducerTest {
         assertEquals(1, ((CollectorHelper)clctr).size());
         PactRecord tmp = ((CollectorHelper)clctr).get(0);
         assertEquals(tmp.getField(0, PactString.class).getValue(), "id1");
-        assertEquals(tmp.getField(1, PactString.class).getValue(), "1,2,3");
+        
+        Set<Integer> expected = new HashSet<>();
+        expected.addAll(Arrays.asList(1,2,3));
+        
+        Set<Integer> actual = new HashSet<>();
+        for (String id : tmp.getField(1, PactString.class).getValue().split(",")) {
+            actual.add(Integer.valueOf(id));
+        }
+        assertEquals(expected, actual);
     }
 
     /**
@@ -76,7 +87,15 @@ public class NodeReducerTest {
         assertEquals(1, ((CollectorHelper)clctr).size());
         PactRecord tmp = ((CollectorHelper)clctr).get(0);
         assertEquals(tmp.getField(0, PactString.class).getValue(), "id2");
-        assertEquals(tmp.getField(1, PactString.class).getValue(), "1,2");
+        
+        Set<Integer> expected = new HashSet<>();
+        expected.addAll(Arrays.asList(1,2));
+        
+        Set<Integer> actual = new HashSet<>();
+        for (String id : tmp.getField(1, PactString.class).getValue().split(",")) {
+            actual.add(Integer.valueOf(id));
+        }
+        assertEquals(expected, actual);
     }
 
     /**
@@ -93,6 +112,15 @@ public class NodeReducerTest {
         assertEquals(1, ((CollectorHelper)clctr).size());
         PactRecord tmp = ((CollectorHelper)clctr).get(0);
         assertEquals(tmp.getField(0, PactString.class).getValue(), "id3");
-        assertEquals(tmp.getField(1, PactString.class).getValue(), "1");
+        
+        Set<Integer> expected = new HashSet<>();
+        expected.addAll(Arrays.asList(1));
+        
+        Set<Integer> actual = new HashSet<>();
+        for (String id : tmp.getField(1, PactString.class).getValue().split(",")) {
+            actual.add(Integer.valueOf(id));
+        }
+        assertEquals(expected, actual);
+        
     }
 }
