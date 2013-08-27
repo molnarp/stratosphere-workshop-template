@@ -15,6 +15,7 @@ public class AreaAssignerMain implements PlanAssembler, PlanAssemblerDescription
 	/**
 	 * {@inheritDoc}
 	 */
+    @Override
 	public Plan getPlan(String... args) {
 		// parse job parameters
 		int noSubTasks = (args.length > 0 ? Integer.parseInt(args[0]) : 1);
