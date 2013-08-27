@@ -47,7 +47,7 @@ public class AreaAssignerMainImproved implements PlanAssembler, PlanAssemblerDes
         .input(areaInput).name("Calculating starting cell ids.").build();
 
 
-/*
+
 
     // Reduce - count geometry per cellids
     ReduceContract countReducer = ReduceContract.builder(CellCounter.class,
@@ -80,10 +80,10 @@ public class AreaAssignerMainImproved implements PlanAssembler, PlanAssemblerDes
     // Separate the input
     MapContract areaSeparate = MapContract.builder(AreaSeparatorMap.class)
         .input(gridCogroup2).name("Separate the area from geometry.").build();
-*/
+
     // Id Matcher
     MatchContract idMatcher = MatchContract.builder(IdMatcher.class, PactString.class, 0, 0)
-        .input1(nodeCellId).input2(areaCellId).name("Matching by Cell Ids").build();
+        .input1(nodeSeparate).input2(areaSeparate).name("Matching by Cell Ids").build();
 
     // Reduce
     ReduceContract nodeReducer = ReduceContract.builder(NodeReducer.class,
